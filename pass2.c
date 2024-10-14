@@ -6,7 +6,7 @@ void main()
 	char opcode[20],operand[20],symbol[20],label[20],code[20],mnemonic[25],character,add[20],objectcode[20];
 	int flag,flag1,locctr,location,loc;
 	FILE *fp1,*fp2,*fp3,*fp4;
-	fp1=fopen("out3.txt","r");
+	fp1=fopen("out1.txt","r");
 	fp2=fopen("twoout.txt","w");
 	fp3=fopen("opcode.txt","r");
 	fp4=fopen("sym2.txt","r");

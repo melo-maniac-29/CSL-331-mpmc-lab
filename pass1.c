@@ -12,20 +12,23 @@ void main()
 	f4=fopen("sym1.txt","w");
 	while(fscanf(f1,"%s%s%s",lab,opcode,opa)!=EOF)
 	{
-		if(strcmp(lab,"**")==0)
-			if(strcmp(opcode,"START")==0)
+		
+			if(strcmp(lab,"**")==0 && strcmp(opcode,"START")==0)
 			{
 				fprintf(f3,"%s\t%s\t%s",lab,opcode,opa);
 				locctr=(atoi(opa));
 			}
 			else
+			{
 				rewind(f2);
 				x=0; 
 				while(fscanf(f2,"%s%s",opcode1,opa1)!=EOF)
+				{
 				if(strcmp(opcode,opcode1)==0)
 				{
 					x=1;
-				}
+					break;
+				}}
 				if(x==1)
 				{
 					fprintf(f3,"\n%d\t%s\t%s\t%s",locctr,lab,opcode,opa);
@@ -55,7 +58,7 @@ void main()
 					{
 						fprintf(f3,"\n%d\t%s\t%s\t%s",locctr,lab,opcode,opa);
 						fprintf(f4,"\n%d\t%s",locctr,lab);
-						locctr=locctr+1;
+						locctr=locctr+(atoi(opa));
 					}
 					else
 					{
@@ -65,4 +68,9 @@ void main()
 					}
 				}
 	}
-} 
+}
+fclose(f1);
+fclose(f2);
+fclose(f3);
+fclose(f4);
+}

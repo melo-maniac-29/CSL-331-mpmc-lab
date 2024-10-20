@@ -29,7 +29,7 @@ start : MOV AX,data
         MOV ah,4ch
         INT 21h
 
-code end
+code ends
 
 end start
 /******  6e5d4b15-a135-4cbd-9913-3219adf9bb31  *******/ 

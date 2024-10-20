@@ -1,109 +1,55 @@
-/*************  ✨ Codeium Command 🌟  *************/
+    /*************  ✨ Codeium Command 🌟  *************/
 Assume CS:code,DS:data
 
 data segment
-
-; strings to prompt user to enter two numbers
-str1 db 0ah,"enter 1st no : $"
-str2 db 0ah,"enter 2nd no : $"
-; string to display the sum of two numbers
-str3 db 0ah,"the sum is:$"
-
+    str1 db 0ah, "enter 1st no : $"   ; Prompt for the 1st number
+    str2 db 0ah, "enter 2nd no : $"   ; Prompt for the 2nd number
+    str3 db 0ah, "the sum is:$"       ; Message to show the sum
 data ends
 
 code segment
+start: 
+    MOV ax, data                     ; Initialize the data segment
+    mov ds, ax                       
 
-start : MOV ax,data
-        mov ds,ax
+    lea dx, str1                     ; Load address of str1 into DX
+    mov ah, 09h                      ; DOS function 09h to display the string
+    int 21h                          ; Interrupt 21h to print the message
 
-        ; display the string to prompt user to enter first number
-        lea dx,str1
-        mov ah,09h
-        int 21h
+    mov ah, 01h                      ; DOS function 01h to read a character from the keyboard
+    int 21h                          ; Interrupt 21h to get the first input (stored in AL)
 
-        ; read the first number from user
-        mov ah,01h
-        int 21h
+    mov bl, al                       ; Store the first number (ASCII) in BL
+    sub bl, 30h                      ; Convert ASCII to numeric value (subtract '0')
 
-        ; store the first number in bh
-        mov bh,al
-        int 21h
+    lea dx, str2                     ; Load address of str2 into DX
+    mov ah, 09h                      ; DOS function 09h to display the string
+    int 21h                          ; Interrupt 21h to print the message
 
-        ; read the second number from user
-        mov bh,al
-        int 21h
+    mov ah, 01h                      ; DOS function 01h to read another character
+    int 21h                          ; Interrupt 21h to get the second input (stored in AL)
 
-        ; store the second number in bl
-        mov bl,al
+    mov cl, al                       ; Store the second number (ASCII) in CL
+    sub cl, 30h                      ; Convert ASCII to numeric value (subtract '0')
 
-        ; convert the numbers from ASCII to decimal
-        ; bh = first number, bl = second number
-        sub bx,3030
+    lea dx, str3                     ; Load address of str3 into DX
+    mov ah, 09h                      ; DOS function 09h to display the result message
+    int 21h                          ; Interrupt 21h to print the message
 
-        ; display the string to prompt user to enter second number
-        lea dx,str2
-        mov ah,09h
-        int 21h
+    mov al, bl                       ; Move the first number (from BL) to AL
+    add al, cl                       ; Add the second number (CL) to the first (AL)
 
-        ; read the second number from user
-        mov ah,01h
-        int 21h
+    ;aaa                              ; ASCII adjust AL after addition (corrects BCD values)
+    aaa                              ; ASCII adjust AL after addition (corrects BCD values)
+    
+    add al, 30h                      ; Convert result (lower nibble) back to ASCII
+    mov dl, al                       ; Move the lower byte to DL for printing
+    mov ah, 02h                      ; DOS function 02h to print the character
+    int 21h                          ; Print the result lower byte
 
-       ; store the second number in ch
-       mov ch,al 
-       int 21h
-
-       ; store the second number in cl
-       mov cl,al
-
-       ; convert the numbers from ASCII to decimal
-       ; ch = first number, cl = second number
-       sub cx,3030h
-
-       ; display the string to display the sum of two numbers
-       lea dx,str3
-       mov ah,09h
-       int 21h
-
-       ; add the two numbers
-       ; ax = sum of two numbers
-       mov ax,bx
-       add ax,cx
-
-       ; convert the sum from decimal to ASCII
-       ; bh = hundreds, al = tens, ah = units
-       mov bl,al
-       mov al,ah
-       mov ah,00h
-       aaa
-
-       ; display the sum of two numbers
-       ; bh = hundreds, al = tens, ah = units
-       mov bh,al
-       mov dl,ah
-
-       ; display the hundreds place
-       add dl,3030h
-       mov ah,02h
-       int 21h
-
-       ; display the tens place
-       mov dl,bh
-       add dl,3030h
-       mov ah,02h
-       int 21h
-
-       ; display the units place
-       mov dl,bl
-       add dl,3030h
-       mov ah,02h
-       int 21h
-
-       ; exit the program
-       mov ah,4ch
-       int 21h
-
+    mov ah, 4ch                      ; DOS function 4Ch to terminate the program
+    int 21h                          ; Interrupt 21h to terminate the program
 code ends
 end start
-        
-/******  57475d8c-0ddc-4f6c-b268-a1c46b416080  *******/ 
+
+/******  8ea3f600-9222-4274-bc3e-316efe5dbc12  *******/

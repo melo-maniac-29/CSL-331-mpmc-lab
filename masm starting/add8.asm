@@ -1,55 +1,70 @@
-    /*************  ✨ Codeium Command 🌟  *************/
-Assume CS:code,DS:data
+assume CS:code, DS:data
 
 data segment
-    str1 db 0ah, "enter 1st no : $"   ; Prompt for the 1st number
-    str2 db 0ah, "enter 2nd no : $"   ; Prompt for the 2nd number
-    str3 db 0ah, "the sum is:$"       ; Message to show the sum
+    str1 db 0ah, "enter 1st number :$"   ; Message prompting user for the 1st number
+    str2 db 0ah, "enter 2nd number :$"   ; Message prompting user for the 2nd number
+    str3 db 0ah, "the sum is:$"          ; Message to display the sum
 data ends
 
 code segment
-start: 
-    MOV ax, data                     ; Initialize the data segment
-    mov ds, ax                       
+start:
+    mov ax, data    ; Load the starting address of the data segment into AX
+    mov ds, ax      ; Initialize DS with the address of the data segment
 
-    lea dx, str1                     ; Load address of str1 into DX
-    mov ah, 09h                      ; DOS function 09h to display the string
-    int 21h                          ; Interrupt 21h to print the message
+    ; Prompt for 1st number
+    lea dx, str1    ; Load address of str1 (prompt message) into DX
+    mov ah, 09h     ; DOS interrupt to display the string (function 09h)
+    int 21h         ; Call DOS interrupt
 
-    mov ah, 01h                      ; DOS function 01h to read a character from the keyboard
-    int 21h                          ; Interrupt 21h to get the first input (stored in AL)
+    ; Input the 1st number
+    mov ah, 01h     ; DOS interrupt to take a single character input (function 01h)
+    int 21h         ; Call DOS interrupt
+    mov bh, al      ; Save the ASCII of the 1st number in BH
+    mov bl, al      ; Also save the same number in BL for future use
+    sub bx, 3030h   ; Convert ASCII to integer (subtract ASCII of '0')
 
-    mov bl, al                       ; Store the first number (ASCII) in BL
-    sub bl, 30h                      ; Convert ASCII to numeric value (subtract '0')
+    ; Prompt for 2nd number
+    lea dx, str2    ; Load address of str2 (prompt message) into DX
+    mov ah, 09h     ; DOS interrupt to display the string (function 09h)
+    int 21h         ; Call DOS interrupt
 
-    lea dx, str2                     ; Load address of str2 into DX
-    mov ah, 09h                      ; DOS function 09h to display the string
-    int 21h                          ; Interrupt 21h to print the message
+    ; Input the 2nd number
+    mov ah, 01h     ; DOS interrupt to take a single character input (function 01h)
+    int 21h         ; Call DOS interrupt
+    mov ch, al      ; Save the ASCII of the 2nd number in CH
+    mov cl, al      ; Also save the same number in CL for future use
+    sub cx, 3030h   ; Convert ASCII to integer (subtract ASCII of '0')
 
-    mov ah, 01h                      ; DOS function 01h to read another character
-    int 21h                          ; Interrupt 21h to get the second input (stored in AL)
+    ; Display "the sum is" message
+    lea dx, str3    ; Load address of str3 (prompt message) into DX
+    mov ah, 09h     ; DOS interrupt to display the string (function 09h)
+    int 21h         ; Call DOS interrupt
 
-    mov cl, al                       ; Store the second number (ASCII) in CL
-    sub cl, 30h                      ; Convert ASCII to numeric value (subtract '0')
+    ; Add the two numbers
+    mov ax, bx      ; Move the value of the 1st number (BX) into AX
+    add ax, cx      ; Add the value of the 2nd number (CX) to AX
 
-    lea dx, str3                     ; Load address of str3 into DX
-    mov ah, 09h                      ; DOS function 09h to display the result message
-    int 21h                          ; Interrupt 21h to print the message
+    ; Adjust the result for ASCII display
+    mov bl, al      ; Move the result (lower byte) into BL
+    mov al, ah      ; Move the higher byte into AL for further adjustment
+    mov ah, 00h     ; Clear AH
+    aaa             ; ASCII Adjust After Addition (corrects AX for BCD)
 
-    mov al, bl                       ; Move the first number (from BL) to AL
-    add al, cl                       ; Add the second number (CL) to the first (AL)
+    ; Output the result in ASCII
+    mov bh, al      ; Move the adjusted higher byte (tens digit) into BH
+    mov dl, ah      ; Move the ASCII-adjusted tens digit into DL
+    add dl, 3030h   ; Convert the adjusted value back to ASCII
+    mov ah, 02h     ; DOS interrupt to print a single character (function 02h)
+    int 21h         ; Call DOS interrupt to display the tens digit
 
-    ;aaa                              ; ASCII adjust AL after addition (corrects BCD values)
-    aaa                              ; ASCII adjust AL after addition (corrects BCD values)
-    
-    add al, 30h                      ; Convert result (lower nibble) back to ASCII
-    mov dl, al                       ; Move the lower byte to DL for printing
-    mov ah, 02h                      ; DOS function 02h to print the character
-    int 21h                          ; Print the result lower byte
+    mov dl, bl      ; Move the ones digit into DL
+    add dl, 3030h   ; Convert the ones digit to ASCII
+    mov ah, 02h     ; DOS interrupt to print a single character (function 02h)
+    int 21h         ; Call DOS interrupt to display the ones digit
 
-    mov ah, 4ch                      ; DOS function 4Ch to terminate the program
-    int 21h                          ; Interrupt 21h to terminate the program
+    ; Terminate the program
+    mov ah, 4Ch     ; DOS interrupt to terminate the program (function 4Ch)
+    int 21h         ; Call DOS interrupt
+
 code ends
 end start
-
-/******  8ea3f600-9222-4274-bc3e-316efe5dbc12  *******/

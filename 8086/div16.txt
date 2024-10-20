@@ -1,0 +1,19 @@
+/*************  ✨ Codeium Command ⭐  *************/
+; Division of two 16-bit numbers in 8086
+
+; implicit addressing mode
+5000 :: MOV AX,[3000]  ; load the value at memory address 3000 into AX
+        MOV BX,[4000]  ; load the value at memory address 4000 into BX
+        DIV BX         ; divide AX by BX, quotient in AX, remainder in DX
+        MOV [6000],AX  ; store the quotient from AX to memory address 6000
+        MOV [7000],DX  ; store the remainder from DX to memory address 7000
+        HLT            ; halt the program
+
+; explicit addressing mode
+5000 :: MOV AX,1000h   ; load the immediate value 1000h into AX
+        MOV BX,0200h   ; load the immediate value 0200h into BX
+        DIV BX         ; divide AX by BX, quotient in AX, remainder in DX
+        MOV [6000],AX  ; store the quotient from AX to memory address 6000
+        MOV [7000],DX  ; store the remainder from DX to memory address 7000
+        HLT            ; halt the program
+/******  0148a15a-1094-4974-86ae-58b89578a8c3  *******/ 

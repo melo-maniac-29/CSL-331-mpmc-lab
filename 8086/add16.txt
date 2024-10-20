@@ -1,0 +1,29 @@
+/*************  ✨ Codeium Command ⭐  *************/
+; addition of two 16 bit numbers in 8086
+
+; implicit addressing mode
+5000 :: MOV AX,[3000] ; load the value at memory address 3000 into AX
+        MOV BX,[4000] ; load the value at memory address 4000 into BX
+        ADD AX,BX     ; add the value in BX to the value in AX
+        MOV [6000],AX ; store the result from AX to memory address 6000
+        HLT           ; halt the program
+
+5000 :: MOV AX,[3000]
+        MOV BX,[4000]
+        ADD AX,BX
+        MOV [6000],AX
+        HLT
+
+; explicit addressing mode
+5000 :: MOV AX,0300h ; load the immediate value 0300h into AX
+        MOV BX,0200h ; load the immediate value 0200h into BX
+        ADD AX,BX     ; add the value in BX to the value in AX
+        MOV [6000],AX ; store the result from AX to memory address 6000
+        HLT           ; halt the program
+
+5000 :: MOV AX,0300h
+        MOV BX,0200h
+        ADD AX,BX
+        MOV [6000],AX
+        HLT
+/******  e20d954e-92be-42a5-8628-686a2b724458  *******/ 

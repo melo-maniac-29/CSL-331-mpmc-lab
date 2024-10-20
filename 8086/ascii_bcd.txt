@@ -1,0 +1,20 @@
+/*************  ✨ Codeium Command 🌟  *************/
+; This code takes an ASCII character from memory address 2050, converts it to a BCD (Binary Coded Decimal) number, and stores the result in memory address 3050.
+convert ascii to bcd
+
+; First, the ASCII character is loaded into the AL (lower byte of AX) register.
+5000 :: MOV AL,[2050]
+
+; The AND instruction is used to clear the upper 4 bits of the ASCII character.
+; The mask 0F (00001111b) is used to clear the upper 4 bits, leaving only the lower 4 bits of the ASCII character.
+; This is done because the ASCII character is represented using 8 bits, but the BCD number that we want to convert it to is represented using only 4 bits.
+; For example, the ASCII character '5' is represented as 0x35, but the BCD number 5 is represented as 0x05.
+; So, we use the AND instruction to clear the upper 4 bits of the ASCII character, leaving only the lower 4 bits that represent the BCD number.
+        AND AL,0F
+
+; The result of the AND instruction is stored in memory address 3050.
+        MOV [3050],AL
+
+; The program is halted using the HLT instruction.
+        HLT
+/******  13cf3194-1b0a-4484-a8a8-c6f674d5e1e3  *******/ 

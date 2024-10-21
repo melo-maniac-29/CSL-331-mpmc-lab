@@ -1,47 +1,32 @@
-/*************  ✨ Codeium Command 🌟  *************/
-; find the largest number in an array
-;
-; initialize BX to point to the array
-find the largest number in an array
+; This code finds the largest number in an array starting at memory address 2000.
+; The size of the array is stored in the first memory location (2000h).
 
-5000 :: MOV BX,2000
-;
-; load the size of the array into CX
-5004 :: MOV CX,[BX]
-;
-; initialize AX to hold the largest number
-5006 :: MOV AX,0000H
-;
-; increment BX to point to the first element in the array
+; Initialize BX to point to the start of the array (2000h)
+5000 :: MOV BX, 2000h
+
+; Load the size of the array into CX (from memory at [BX])
+5004 :: MOV CX, [BX]
+
+; Initialize AX to hold the largest number, starting with 0
+5006 :: MOV AX, 0000h
+
+; Increment BX to point to the first element in the array
 500A :: INC BX
-;
-; increment BX again to point to the first element in the array
 500B :: INC BX
-;
-; compare the current element in AX with the next element in the array
-500C :: CMP AX,[BX]
-;
-; if the current element is greater than the next element, jump to 5012
-500E :: JNC 5012
-;
-; otherwise, move the next element in the array to AX
-5010 :: MOV AX,[BX]
-;
-; decrement CX until it is zero
+
+; Loop through the array to find the largest number
+500C :: CMP AX, [BX]    ; Compare AX (current largest) with the element at [BX]
+500E :: JNC 5012        ; If AX is greater or equal, skip the update
+
+; Otherwise, update AX with the current element (new largest)
+5010 :: MOV AX, [BX]
+
+; Decrement the counter CX and repeat the process for remaining elements
 5012 :: DEC CX
-;
-; if CX is not zero, jump to 500A
-        JNZ 500A
-;
-; increment BX to point to the last element in the array
-        INC BX
-;
-; increment BX again to point to the last element in the array
-        INC BX
-;
-; store the largest number in AX to the last element in the array
-        MOV [BX],AX
-;
-; halt the program
-        HLT
-/******  f553659e-9f18-4836-9207-d7781682bf25  *******/ 
+       JNZ 500A         ; If CX is not zero, go back to process the next element
+
+; Store the largest number in the array (in the last element position)
+       MOV [BX], AX
+
+; Halt the program
+       HLT

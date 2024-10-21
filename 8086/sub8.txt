@@ -1,35 +1,21 @@
-/*************  ✨ Codeium Command 🌟  *************/
+
 subtraction of two 8 bit numbers in 8086
 
-; implicit addressing mode
-5000 :: MOV AL,[3000] ; load the value at memory address 3000 into AL
-        MOV BL,[4000] ; load the value at memory address 4000 into BL
-        SUB AL,BL     ; subtract the value in BL from the value in AL
-        MOV [6000],AL ; store the result from AL to memory address 6000
-        HLT           ; halt the program
-implicit 
+ implicit addressing mode
 
-5000 :: MOV AL,[3000]
-        MOV BL,[4000]
-        SUB AL,BL
-        MOV [6000],AL
-        HLT 
+MOV AL, [3000h]   ; Load the value from memory address 3000h into AL
+MOV BL, [4000h]   ; Load the value from memory address 4000h into BL
+SUB AL, BL        ; Subtract the value in BL from AL, result stored in AL
+MOV [6000h], AL   ; Store the result from AL into memory address 6000h
+HLT               ; Halt the program
 
 
 ------------------------------------------------------------------------------------------------
 
 explicit 
 
-; explicit addressing mode
-5000 :: MOV AL,05     ; load the immediate value 05 into AL
-        MOV BL,02     ; load the immediate value 02 into BL
-        SUB AL,BL     ; subtract the value in BL from the value in AL
-        MOV [6000],AL ; store the result from AL to memory address 6000
-        HLT           ; halt the program
-
-5000 :: MOV AL,05
-        MOV BL,02
-        SUB AL,BL
-        MOV [6000],AL
-        HLT
-/******  f336b283-b65b-44fb-bbd2-f9b05e9efd81  *******/ 
+MOV AL, 05h       ; Load immediate value 05h into AL
+MOV BL, 02h       ; Load immediate value 02h into BL
+SUB AL, BL        ; Subtract the value in BL from AL, result stored in AL
+MOV [6000h], AL   ; Store the result from AL into memory address 6000h
+HLT               ; Halt the program

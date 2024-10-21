@@ -1,22 +1,14 @@
-/*************  ✨ Codeium Command ⭐  *************/
-; subtraction of two 16 bit numbers
+; Implicit Addressing Mode
+MOV AX, [3000h]   ; Load the 16-bit value from memory address 3000h into AX
+MOV BX, [4000h]   ; Load the 16-bit value from memory address 4000h into BX
+SUB AX, BX        ; Subtract the value in BX from AX
+MOV [6000h], AX   ; Store the result from AX to memory address 6000h
+HLT               ; Halt the program
 
 
-; implicit addressing mode
-5000 :: MOV AX,[3000]  ; load the value at memory address 3000 into AX
-        MOV BX,[4000]  ; load the value at memory address 4000 into BX
-        SUB AX,BX      ; subtract the value in BX from the value in AX
-        MOV [6000],AX  ; store the result from AX to memory address 6000
-        HLT             ; halt the program
-
-
-
-
-
-; explicit addressing mode
-5000 :: MOV AX,0100    ; load the immediate value 0100 into AX
-        MOV BX,0050    ; load the immediate value 0050 into BX
-        SUB AX,BX      ; subtract the value in BX from the value in AX
-        MOV [6000],AX  ; store the result from AX to memory address 6000
-        HLT             ; halt the program
-/******  032fdc10-2013-405b-b6b8-0c0707d02fe0  *******/ 
+; Explicit Addressing Mode
+MOV AX, 0100h     ; Load the immediate value 0100h into AX
+MOV BX, 0050h     ; Load the immediate value 0050h into BX
+SUB AX, BX        ; Subtract the value in BX from AX
+MOV [6000h], AX   ; Store the result from AX to memory address 6000h
+HLT               ; Halt the program

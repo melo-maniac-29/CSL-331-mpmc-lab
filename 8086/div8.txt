@@ -1,35 +1,22 @@
-/*************  ✨ Codeium Command 🌟  *************/
-division of two 8 bit numbers 
+
 
 implicit
 
-                                                     ; load the value at memory address 3000 into AL
-5000 :: MOV AL,[3000]
-                                                     ; load the value at memory address 4000 into BL
-        MOV BL,[4000]
-                                        ; divide the value in BL by the value in AL, quotient in AL, remainder in AH
-        DIV BL
-                                        ; store the quotient from AL to memory address 6000
-        MOV [6000],AL
-                                        ; store the remainder from AH to memory address 7000
-        MOV [7000],AH
-                                        ; halt the program
-        HLT
+MOV AL, [3000h]   ; Load the value from memory address 3000h into AL
+MOV BL, [4000h]   ; Load the value from memory address 4000h into BL
+DIV BL            ; Divide AL by BL, quotient in AL, remainder in AH
+MOV [6000h], AL   ; Store the quotient from AL into memory address 6000h
+MOV [7000h], AH   ; Store the remainder from AH into memory address 7000h
+HLT               ; Halt the program
+
 
 
 explicit
 
-                                       ; load the immediate value 10 into AL
-5000 :: MOV AL,10
-                                       ; load the immediate value 03 into BL
-        MOV BL,03
-                                       ; divide the value in BL by the value in AL, quotient in AL, remainder in AH
-        DIV BL
-                                       ; store the quotient from AL to memory address 6000
-        MOV [6000],AL
-                                       ; store the remainder from AH to memory address 7000
-        MOV [7000],AH
-                                       ; halt the program
-        HLT
-    
-/******  9161da9f-0c4d-4a86-a4b1-b36088e405e4  *******/ 
+
+MOV AL, 10h       ; Load the immediate value 10h into AL
+MOV BL, 03h       ; Load the immediate value 03h into BL
+DIV BL            ; Divide AL by BL, quotient in AL, remainder in AH
+MOV [6000h], AL   ; Store the quotient from AL into memory address 6000h
+MOV [7000h], AH   ; Store the remainder from AH into memory address 7000h
+HLT               ; Halt the program

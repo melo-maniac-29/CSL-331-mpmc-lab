@@ -1,30 +1,19 @@
-/*************  ✨ Codeium Command 🌟  *************/
-addition of 8 bit numbers in the 8086
 
 implicit
 
-5000 :: MOV[3000],AL  ; Move the value at memory address 3000 into register AL
-        MOV[4000],BL  ; Move the value at memory address 4000 into register BL
-        ADD AL,BL     ; Add the values in registers AL and BL, result in AL
-        MOV [6000],AL ; Move the result from AL to memory address 6000
-        HLT           ; Halt the program
-5000 :: MOV[3000],AL
-        MOV[4000],BL
-        ADD AL,BL
-        MOV [6000],AL
-        HLT
+MOV AL, [3000h]   ; Move the value at memory address 3000h into register AL
+MOV BL, [4000h]   ; Move the value at memory address 4000h into register BL
+ADD AL, BL        ; Add the values in AL and BL, result in AL
+MOV [6000h], AL   ; Store the result from AL into memory address 6000h
+HLT               ; Halt the program
+
+
 
 
 explicit
 
-5000 :: MOV AL,03     ; Load immediate value 03 into register AL
-        MOV BL,02     ; Load immediate value 02 into register BL
-        ADD AL,BL     ; Add the values in registers AL and BL, result in AL
-        MOV [6000],AL ; Move the result from AL to memory address 6000
-        HLT           ; Halt the program
-5000 :: MOV AL,03
-        MOV BL,02
-        ADD AL,BL
-        MOV [6000],AL
-        HLT
-/******  1b3d4103-f348-47a8-b4a8-5cb1776b7512  *******/ 
+MOV AL, 03h       ; Load immediate value 03h into register AL
+MOV BL, 02h       ; Load immediate value 02h into register BL
+ADD AL, BL        ; Add the values in AL and BL, result in AL
+MOV [6000h], AL   ; Store the result from AL into memory address 6000h
+HLT               ; Halt the program

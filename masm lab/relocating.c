@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,14 +27,6 @@ int main() {
         return 1; // Return an error code
     }
 
-    // Debug: Print file contents
-    char line[100];
-    printf("\nContents of RLIN.txt:\n");
-    while (fgets(line, sizeof(line), fp1) != NULL) {
-        printf("%s", line);
-    }
-    rewind(fp1);  // Rewind to the beginning for actual processing
-
     fprintf(fp2, "ADDRESS\t\tCONTENT\n");
     fscanf(fp1, "%s", input);
 
@@ -48,27 +41,31 @@ int main() {
         }
 
         // Handle text record
-        if (strcmp(input, "T") == 0) {
-            fscanf(fp1, "%x", &address);
-            fscanf(fp1, "%x", &tlen);
-            fscanf(fp1, "%s", bitmask);
+        // Handle text record
+if (strcmp(input, "T") == 0) {
+    fscanf(fp1, "%x", &address);
+    fscanf(fp1, "%x", &tlen);
+    fscanf(fp1, "%s", bitmask);
 
-            address += start;  // Add start to the address
-            convert(bitmask);  // Convert the bitmask to bit representation
+    address += start;  // Add start to the address
+    convert(bitmask);  // Convert the bitmask to bit representation
 
-            printf("Processing text record at address %x with length %x\n", address, tlen);
+    len = strlen(bit);
+    if (len > 11) {
+        len = 10;  // Limiting the length for processing
+    }
 
-            // Reading opcodes based on the length provided
-            for (i = 0; i < tlen / 2; i++) {  // Each opcode is 2 hex digits
-                if (fscanf(fp1, "%x", &opcode) != 1) {
-                    printf("Error reading opcode at address %x. Expected more opcodes.\n", address);
-                    fclose(fp1);
-                    fclose(fp2);
-                    return 1; // Return error code
-                }
+    for (i = 0; i < tlen / 2; i++) {  // Adjusted for number of opcodes
+        if (fscanf(fp1, "%x", &opcode) != 1 || fscanf(fp1, "%x", &addr) != 1) {
+            printf("Error reading opcode or address at address %x\n", address);
+            fclose(fp1);
+            fclose(fp2);
+            return 1; // Return error code
+        }
+        
 
-                // Correctly get the relocation bit based on index
-                relocbit = bit[i];  // Get the relocation bit for this opcode
+
+                relocbit = bit[i];
                 if (relocbit == '1') {
                     actualadd = opcode + start;  // Adjust address based on relocation bit
                 } else {
@@ -134,4 +131,4 @@ void convert(char h[12]) {
             default: printf("Invalid hex character\n"); break;
         }
     }
-}
+}

@@ -16,7 +16,7 @@ int main() {
     scanf("%x", &start);
 
     // Open files
-    fp1 = fopen("RLIN.TXT", "r");
+    fp1 = fopen("RLIN.txt", "r");
     if (fp1 == NULL) {
         perror("Error opening RLIN.TXT");
         return 1;

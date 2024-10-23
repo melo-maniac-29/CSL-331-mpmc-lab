@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,6 +26,14 @@ int main() {
         return 1; // Return an error code
     }
 
+    // Debug: Print file contents
+    char line[100];
+    printf("\nContents of RLIN.txt:\n");
+    while (fgets(line, sizeof(line), fp1) != NULL) {
+        printf("%s", line);
+    }
+    rewind(fp1);  // Rewind to the beginning for actual processing
+
     fprintf(fp2, "ADDRESS\t\tCONTENT\n");
     fscanf(fp1, "%s", input);
 
@@ -50,35 +57,32 @@ if (strcmp(input, "T") == 0) {
     address += start;  // Add start to the address
     convert(bitmask);  // Convert the bitmask to bit representation
 
-    len = strlen(bit);
-    if (len > 11) {
-        len = 10;  // Limiting the length for processing
-    }
+    printf("Processing text record at address %x with length %x\n", address, tlen);
 
-    for (i = 0; i < tlen / 2; i++) {  // Adjusted for number of opcodes
-        if (fscanf(fp1, "%x", &opcode) != 1 || fscanf(fp1, "%x", &addr) != 1) {
-            printf("Error reading opcode or address at address %x\n", address);
+    // Reading opcodes based on the length provided
+    for (i = 0; i < tlen / 2; i++) {  // Each opcode is 2 hex digits
+        if (fscanf(fp1, "%x", &opcode) != 1) {
+            printf("Error reading opcode at address %x. Expected more opcodes.\n", address);
             fclose(fp1);
             fclose(fp2);
             return 1; // Return error code
         }
-        
 
-
-                relocbit = bit[i];
-                if (relocbit == '1') {
-                    actualadd = opcode + start;  // Adjust address based on relocation bit
-                } else {
-                    actualadd = opcode;
-                }
-
-                fprintf(fp2, "\n%x\t\t%x%x\n", address, opcode, actualadd);
-                address += 3;  // Increment address by 3 for next entry
-            }
-
-            fscanf(fp1, "%s", input); // Read the next input for the loop condition
-            continue; // Skip to the next loop iteration
+        relocbit = bit[i];  // Get the relocation bit for this opcode
+        if (relocbit == '1') {
+            actualadd = opcode + start;  // Adjust address based on relocation bit
+        } else {
+            actualadd = opcode;
         }
+
+        fprintf(fp2, "\n%x\t\t%x%x\n", address, opcode, actualadd);
+        address += 3;  // Increment address by 3 for next entry
+    }
+
+    fscanf(fp1, "%s", input); // Read the next input for the loop condition
+    continue; // Skip to the next loop iteration
+}
+
 
         // Handle unexpected input types and read next input
         fscanf(fp1, "%s", input); // Read next input for the loop condition

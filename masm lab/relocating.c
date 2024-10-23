@@ -4,13 +4,14 @@
 
 FILE *obj;
 
-char prog_name[10], record[100], locn[4], instr[2], reloc_bits[3], bit_mask[30], objcode[6], cnt[2];
+char prog_name[10], record[100], locn[5], instr[3], reloc_bits[4], bit_mask[30], objcode[7], cnt[3];
 
-int i, j, k=0, flag=0, rec_len, start, ind, new_loc, load_addr, count=0;
-long rel_addr;
+int i, j, k = 0, flag = 0, rec_len, start, ind, new_loc, load_addr, count = 0;
+unsigned int rel_addr; // Change to unsigned int
 
-void convert_to_bin(){
-    i=0;
+void convert_to_bin() {
+    i = 0;
+    bit_mask[0] = '\0'; // Initialize bit_mask
     while (reloc_bits[i]) {
         switch (reloc_bits[i]) {
             case '0': strcat(bit_mask, "0000"); break;
@@ -30,92 +31,82 @@ void convert_to_bin(){
             case 'E': case 'e': strcat(bit_mask, "1110"); break;
             case 'F': case 'f': strcat(bit_mask, "1111"); break;
         }
-
         i++;
     }
 }
 
-int main(){
-
+int main() {
     printf("\nEnter the name of the program to be loaded: ");
     scanf("%s", prog_name);
 
     obj = fopen("obj2.txt", "r");
-    fscanf(obj, "%s", record);
+    if (obj == NULL) {
+        fprintf(stderr, "Error opening the object file.\n");
+        return 1;
+    }
 
-    for(i=0; i<strlen(prog_name); i++){
-        if(record[i+2] == prog_name[i]){
-            flag=0;
-        }
-        else{
-            flag=1;
-            break;
+    if (fscanf(obj, "%s", record) != 1) {
+        fprintf(stderr, "Error reading from the object file.\n");
+        fclose(obj);
+        return 1;
+    }
+
+    // Check program name
+    for (i = 0; i < strlen(prog_name); i++) {
+        if (record[i + 2] != prog_name[i]) {
+            printf("Invalid program name!\n");
+            fclose(obj);
+            return 1;
         }
     }
-    if (flag == 1){
-        printf("Invalid program name!\n");
-    }
-    else{
-        printf("\nEnter load address: ");
-        scanf("%x", &load_addr);
-        for(i=strlen(prog_name)+5, k=0; k<4, i<= strlen(prog_name)+8; k++, i++){
-            locn[k] = record[i];
-        }
 
-        while(record[0] != 'E'){
-            bit_mask[0] = '\0';
-            if(record[0] == 'T'){
-                for (j=4, k=0; j<8, k<4; k++, j++){ //read start location from text record
-                    locn[k] = record[j];
+    printf("\nEnter load address: ");
+    scanf("%x", &load_addr);
+
+    // Read start location from text record
+    while (record[0] != 'E') {
+        if (record[0] == 'T') {
+            strncpy(locn, record + 4, 4);
+            locn[4] = '\0'; // Ensure null termination
+
+            sscanf(locn, "%x", &start);
+            new_loc = start;
+
+            strncpy(reloc_bits, record + 12, 3);
+            reloc_bits[3] = '\0'; // Ensure null termination
+
+            strncpy(cnt, record + 9, 2);
+            cnt[2] = '\0'; // Ensure null termination
+            sscanf(cnt, "%x", &count);
+            count /= 3; // Divide by 3 for number of object codes
+
+            convert_to_bin(); // Convert relocation bits to binary
+
+            ind = 16;
+            for (i = 0; i < 10 && count > 0; i++) {
+                for (j = 0; j < 6 && ind < strlen(record); j++, ind++) {
+                    objcode[j] = record[ind];
+                }
+                objcode[6] = '\0'; // Ensure null termination
+
+                sscanf(objcode, "%x", &rel_addr); // No warning now
+
+                if (bit_mask[i] == '1') { // Relocation required
+                    printf("00%x\t  %x\n", new_loc + load_addr, rel_addr + load_addr);
+                } else { // Relocation not required
+                    printf("00%x\t  %x\n", new_loc + load_addr, rel_addr);
                 }
 
-                sscanf(locn, "%x", &start);
-                new_loc = start;
-
-                for(i=12, j=0; i<15, j<3; i++, j++){ //read relocating bits
-                    reloc_bits[j] = record[i];
-                }
-
-                for(i=9, k=0; i<11, k<2; i++, k++){ //get instruction length
-                    cnt[k] = record[i];
-                }
-
-                sscanf(cnt, "%x", &count);
-
-                count = count/3; //dividing by 3 to get total no of object codes
-
-                convert_to_bin();   //get the bit mask
-
-                ind = 16;
-                for(i=0; i<10; i++){
-                    while(count > 0){
-                        for(j=0, k=ind; j<6, k<ind+6; j++, k++){
-                                objcode[j] = record[k];
-                            }
-                        ind+=7;
-
-                        if(bit_mask[i] == '1'){ //relocation required
-                            sscanf(objcode, "%x", &rel_addr);
-                            printf("00%x\t  %x\n", new_loc+load_addr, rel_addr + load_addr);
-                            new_loc += 3;
-                            count--;
-                            break;
-                        }
-                        else{ //relocation not required
-                            sscanf(objcode, "%x", &rel_addr);
-                            printf("00%x\t  %x\n", new_loc+load_addr, rel_addr);
-                            new_loc += 3;
-                            count--;
-                            break;
-                        }
-                    }
-
-                }
+                new_loc += 3;
+                count--;
+                ind += 1; // Move to the next object code
             }
-            fscanf(obj, "%s", record);
         }
-
-
+        if (fscanf(obj, "%s", record) != 1) {
+            break; // Exit if there are no more records
+        }
     }
+
+    fclose(obj);
     return 0;
 }

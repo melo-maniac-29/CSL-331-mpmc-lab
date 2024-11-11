@@ -1,0 +1,44 @@
+name: Feature request
+description: Suggest a new feature for this project
+title: "[FEATURE] "
+labels: enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature!
+
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      description: A clear and concise title for the feature request.
+      placeholder: Feature title
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of what the feature does.
+      placeholder: Feature description
+
+  - type: textarea
+    id: justification
+    attributes:
+      label: Justification
+      description: Why is this feature important? What problem does it solve?
+      placeholder: Justification for this feature
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Possible alternatives
+      description: Any alternative solutions or features you've considered.
+      placeholder: Possible alternatives
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add any other context or screenshots about the feature request here.
+      placeholder: Additional context

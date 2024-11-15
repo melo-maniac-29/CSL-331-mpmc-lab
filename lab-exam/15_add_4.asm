@@ -27,7 +27,6 @@ start:
     mov ah, 01h           ; Set function 01h to read a character from the keyboard
     int 21h               ; Call DOS interrupt to read a character
     sub al, 30h           ; Convert ASCII to integer
-    add al, bl            ; Add the first number (in BL) to the second number (in AL)
 
     lea dx, str3          ; Load the address of str3 (display the sum message) into DX
     mov ah, 09h           ; Set function 09h to display the string
